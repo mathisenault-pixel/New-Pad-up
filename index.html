@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Pad'up</title>
@@ -24,18 +24,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   width: 100%;
+  max-width: 100%;
   height: 100%;
   overflow: hidden;
+  overflow-x: hidden;
   background: #0A0A0F;
   color: #F0F0F5;
   font-family: "DM Sans", sans-serif;
 }
-<<<<<<< HEAD
-body {
-  padding-top: env(safe-area-inset-top);
-}
-=======
->>>>>>> 93c676a37226a65f2b0b58ebb389b5dfa949d73d
+
 .app-shell {
   width: 100%;
   height: 100vh;
@@ -53,11 +50,7 @@ body {
   overflow: hidden;
 }
 .tab-page.active { display: flex; }
-<<<<<<< HEAD
 .tab-page .status-bar { display: none !important; }
-=======
-.tab-page .status-bar { display: none; }
->>>>>>> 93c676a37226a65f2b0b58ebb389b5dfa949d73d
 .tab-page .scroll-content {
   flex: 1;
   overflow-y: auto;
@@ -2847,19 +2840,7 @@ body {
 <body>
 <div class="app-shell">
 <div class="tab-page active" id="tab-accueil">
-<<<<<<< HEAD
 <div class="scroll-content">
-=======
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
-      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2" stroke="#F0F0F5" stroke-width="1.5" fill="none"/><path d="M18 10.5a2 2 0 010 3" stroke="#F0F0F5" stroke-width="1.5" fill="none"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5"/></svg>
-    </div>
-  </div>
-
-  <div class="scroll-content">
->>>>>>> 93c676a37226a65f2b0b58ebb389b5dfa949d73d
 
     <!-- HEADER -->
     <div class="header" style="position:relative;">
@@ -3064,19 +3045,7 @@ body {
 
 </div>
 <div class="tab-page" id="tab-clubs">
-<<<<<<< HEAD
 <div class="header">
-=======
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01"/></svg>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M18 10.5a2 2 0 010 3"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5" stroke="none"/></svg>
-    </div>
-  </div>
-
-  <div class="header">
->>>>>>> 93c676a37226a65f2b0b58ebb389b5dfa949d73d
     <div class="header-top">
       <div class="page-title">Clubs</div>
     </div>
@@ -3375,19 +3344,7 @@ body {
 
 </div>
 <div class="tab-page" id="tab-feed">
-<<<<<<< HEAD
 <!-- HEADER -->
-=======
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01"/></svg>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M18 10.5a2 2 0 010 3"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5" stroke="none"/></svg>
-    </div>
-  </div>
-
-  <!-- HEADER -->
->>>>>>> 93c676a37226a65f2b0b58ebb389b5dfa949d73d
   <div class="header">
     <div class="page-title">Feed</div>
     <div class="header-actions">
@@ -3607,19 +3564,7 @@ body {
 
 </div>
 <div class="tab-page" id="tab-tournois">
-<<<<<<< HEAD
 <div class="header">
-=======
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01"/></svg>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M18 10.5a2 2 0 010 3"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5" stroke="none"/></svg>
-    </div>
-  </div>
-
-  <div class="header">
->>>>>>> 93c676a37226a65f2b0b58ebb389b5dfa949d73d
     <div class="page-title">Tournois</div>
     <div class="header-right">
       <div class="icon-btn">
@@ -3868,19 +3813,7 @@ body {
 
 </div>
 <div class="tab-page" id="tab-profil">
-<<<<<<< HEAD
 <div class="scroll-content">
-=======
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01"/></svg>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M18 10.5a2 2 0 010 3"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5" stroke="none"/></svg>
-    </div>
-  </div>
-
-  <div class="scroll-content">
->>>>>>> 93c676a37226a65f2b0b58ebb389b5dfa949d73d
 
     <!-- COVER -->
     <div class="profile-cover">
