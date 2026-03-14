@@ -30,6 +30,9 @@ html, body {
   color: #F0F0F5;
   font-family: "DM Sans", sans-serif;
 }
+body {
+  padding-top: env(safe-area-inset-top);
+}
 .app-shell {
   width: 100%;
   height: 100vh;
@@ -47,7 +50,7 @@ html, body {
   overflow: hidden;
 }
 .tab-page.active { display: flex; }
-.tab-page .status-bar { display: none; }
+.tab-page .status-bar { display: none !important; }
 .tab-page .scroll-content {
   flex: 1;
   overflow-y: auto;
@@ -2837,15 +2840,7 @@ html, body {
 <body>
 <div class="app-shell">
 <div class="tab-page active" id="tab-accueil">
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
-      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2" stroke="#F0F0F5" stroke-width="1.5" fill="none"/><path d="M18 10.5a2 2 0 010 3" stroke="#F0F0F5" stroke-width="1.5" fill="none"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5"/></svg>
-    </div>
-  </div>
-
-  <div class="scroll-content">
+<div class="scroll-content">
 
     <!-- HEADER -->
     <div class="header" style="position:relative;">
@@ -3050,15 +3045,7 @@ html, body {
 
 </div>
 <div class="tab-page" id="tab-clubs">
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01"/></svg>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M18 10.5a2 2 0 010 3"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5" stroke="none"/></svg>
-    </div>
-  </div>
-
-  <div class="header">
+<div class="header">
     <div class="header-top">
       <div class="page-title">Clubs</div>
     </div>
@@ -3357,15 +3344,7 @@ html, body {
 
 </div>
 <div class="tab-page" id="tab-feed">
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01"/></svg>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M18 10.5a2 2 0 010 3"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5" stroke="none"/></svg>
-    </div>
-  </div>
-
-  <!-- HEADER -->
+<!-- HEADER -->
   <div class="header">
     <div class="page-title">Feed</div>
     <div class="header-actions">
@@ -3585,15 +3564,7 @@ html, body {
 
 </div>
 <div class="tab-page" id="tab-tournois">
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01"/></svg>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M18 10.5a2 2 0 010 3"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5" stroke="none"/></svg>
-    </div>
-  </div>
-
-  <div class="header">
+<div class="header">
     <div class="page-title">Tournois</div>
     <div class="header-right">
       <div class="icon-btn">
@@ -3842,15 +3813,7 @@ html, body {
 
 </div>
 <div class="tab-page" id="tab-profil">
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><path d="M1.5 8.5a13 13 0 0121 0M5 12a10 10 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01"/></svg>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M18 10.5a2 2 0 010 3"/><rect x="4" y="9" width="9" height="6" rx="1" fill="#F0F0F5" stroke="none"/></svg>
-    </div>
-  </div>
-
-  <div class="scroll-content">
+<div class="scroll-content">
 
     <!-- COVER -->
     <div class="profile-cover">
