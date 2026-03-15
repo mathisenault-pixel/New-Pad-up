@@ -1,0 +1,4056 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0A0A0F">
+<title>Pad'up</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Capacitor runtime -->
+<script src="capacitor.js" defer></script>
+<style>
+:root {
+  --bg: #0A0A0F;
+  --surface: #111118;
+  --surface2: #18181F;
+  --border: rgba(255,255,255,0.07);
+  --accent: #4A8FE8;
+  --accent2: #1A5FBF;
+  --text: #F0F0F5;
+  --muted: #6B6B7E;
+  --card: #13131A;
+  --gold: #F5A623;
+  --green: #4ade80;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overflow-x: hidden;
+  background: #0A0A0F;
+  color: #F0F0F5;
+  font-family: "DM Sans", sans-serif;
+}
+
+.app-shell {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #0A0A0F;
+  overflow: hidden;
+}
+.tab-page {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.tab-page.active { display: flex; }
+.tab-page .status-bar { display: none !important; }
+.tab-page .scroll-content {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 20px;
+}
+.tab-page .scroll-content::-webkit-scrollbar { display: none; }
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 14px 0 max(24px, env(safe-area-inset-bottom));
+  background: rgba(10,10,15,0.97);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+  z-index: 200;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 18px;
+  border-radius: 14px;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-icon { font-size: 26px; line-height: 1; display:flex; align-items:center; justify-content:center; color: #6B6B7E; }
+.nav-icon svg { width: 26px; height: 26px; }
+.nav-label { font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 500; color: #6B6B7E; }
+.nav-item.active .nav-label { color: #4A8FE8; }
+.nav-item.active .nav-icon { color: #4A8FE8; }
+/* Remove phone shell styles */
+.phone { all: unset; display: flex; flex-direction: column; width: 100%; height: 100%; }
+
+/* === accueil === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0F;
+    --surface: #111118;
+    --surface2: #18181F;
+    --border: rgba(255,255,255,0.07);
+    --accent: #4A8FE8;
+    --accent2: #1A5FBF;
+    --text: #F0F0F5;
+    --muted: #6B6B7E;
+    --card: #13131A;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 0 40px;
+  }
+
+  .phone {
+    width: 390px;
+    min-height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 0 8px #0d0d12,
+      0 40px 80px rgba(0,0,0,0.8),
+      0 0 100px rgba(74,143,232,0.06);
+  }
+
+  /* STATUS BAR */
+#tab-accueil .status-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+#tab-accueil .status-bar .time{ font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
+#tab-accueil .status-icons{ display: flex; gap: 5px; align-items: center; }
+#tab-accueil .status-icons svg{ width: 16px; height: 16px; fill: var(--text); }
+
+  /* SCROLL CONTENT */
+#tab-accueil .scroll-content{
+    overflow-y: auto;
+    height: calc(844px - 90px);
+    scrollbar-width: none;
+    padding-bottom: 30px;
+  }
+#tab-accueil .scroll-content::-webkit-scrollbar{ display: none; }
+
+  /* HEADER */
+#tab-accueil .header{
+    padding: 22px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+#tab-accueil .logo{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+#tab-accueil .logo span{ color: var(--accent); }
+#tab-accueil .header-left{ width: 38px; }
+#tab-accueil .msg-btn{
+    width: 38px; height: 38px;
+    background: var(--surface2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+#tab-accueil .msg-dot{
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: absolute;
+    top: 8px; right: 8px;
+    border: 1.5px solid var(--bg);
+  }
+
+  /* GREETING */
+#tab-accueil .greeting{
+    padding: 20px 24px 0;
+  }
+#tab-accueil .greeting-sub{
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+#tab-accueil .greeting-name{
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    margin-top: 3px;
+    letter-spacing: -0.5px;
+  }
+#tab-accueil .greeting-name em{ color: var(--accent); font-style: normal; }
+
+  /* HERO CARD */
+#tab-accueil .hero-card{
+    margin: 24px 24px 0;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #1A1A28 0%, #0F0F18 100%);
+    border: 1px solid rgba(74,143,232,0.2);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+#tab-accueil .hero-card::before{
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(74,143,232,0.15) 0%, transparent 70%);
+  }
+#tab-accueil .hero-card::after{
+    content: '';
+    position: absolute;
+    bottom: -30px; left: 60px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(26,95,191,0.12) 0%, transparent 70%);
+  }
+#tab-accueil .hero-tag{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(74,143,232,0.1);
+    border: 1px solid rgba(74,143,232,0.25);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+#tab-accueil .hero-title{
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-top: 12px;
+    letter-spacing: -0.3px;
+  }
+#tab-accueil .hero-sub{
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+#tab-accueil .hero-cta{
+    margin-top: 24px;
+    display: flex;
+    gap: 14px;
+  }
+#tab-accueil .btn-primary{
+    background: var(--accent);
+    color: #0A0A0F;
+    border: none;
+    border-radius: 12px;
+    padding: 11px 20px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    flex: 1;
+    letter-spacing: 0.2px;
+  }
+#tab-accueil .btn-secondary{
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 11px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+  }
+#tab-accueil .hero-stats{
+    display: flex;
+    gap: 0;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+#tab-accueil .hero-stat{
+    flex: 1;
+    text-align: center;
+  }
+#tab-accueil .hero-stat:not(:last-child){
+    border-right: 1px solid var(--border);
+  }
+#tab-accueil .hero-stat-value{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--accent);
+  }
+#tab-accueil .hero-stat-label{
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* SECTION TITLE */
+#tab-accueil .section-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 24px 16px;
+  }
+#tab-accueil .section-title{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.3px;
+  }
+#tab-accueil .section-link{
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  /* SEARCH BAR */
+#tab-accueil .search-wrap{
+    padding: 0 24px;
+    margin-top: 4px;
+  }
+#tab-accueil .search-bar{
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+#tab-accueil .search-icon{ color: var(--muted); font-size: 16px; }
+#tab-accueil .search-bar input{
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    flex: 1;
+  }
+#tab-accueil .search-bar input::placeholder{ color: var(--muted); }
+#tab-accueil .search-filter{
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* FILTERS */
+#tab-accueil .filters{
+    display: flex;
+    gap: 12px;
+    padding: 14px 24px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+#tab-accueil .filters::-webkit-scrollbar{ display: none; }
+#tab-accueil .filter-pill{
+    white-space: nowrap;
+    padding: 7px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+#tab-accueil .filter-pill.active{
+    background: var(--accent);
+    color: #0A0A0F;
+    border-color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* TERRAIN CARDS */
+#tab-accueil .terrain-scroll{
+    display: flex;
+    gap: 12px;
+    padding: 18px 24px 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+#tab-accueil .terrain-scroll::-webkit-scrollbar{ display: none; }
+#tab-accueil .terrain-card{
+    width: 200px;
+    flex-shrink: 0;
+    background: var(--card);
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+#tab-accueil .terrain-img{
+    width: 100%;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+#tab-accueil .terrain-img-1{ background: linear-gradient(135deg, #1A3A6B, #2B5BAD); }
+#tab-accueil .terrain-img-2{ background: linear-gradient(135deg, #1E3A7A, #2D5FC4); }
+#tab-accueil .terrain-img-3{ background: linear-gradient(135deg, #1A3F5C, #2A6496); }
+#tab-accueil .terrain-court{
+    width: 100px;
+    height: 65px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+#tab-accueil .terrain-court::before{
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+#tab-accueil .terrain-court::after{
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    width: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+#tab-accueil .terrain-badge{
+    position: absolute;
+    top: 8px; right: 8px;
+    background: rgba(74,143,232,0.2);
+    border: 1px solid rgba(74,143,232,0.4);
+    border-radius: 100px;
+    padding: 3px 8px;
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+#tab-accueil .terrain-dispo{
+    position: absolute;
+    bottom: 8px; left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+  }
+#tab-accueil .dispo-dot{
+    width: 5px; height: 5px;
+    background: #4ade80;
+    border-radius: 50%;
+  }
+#tab-accueil .terrain-info{
+    padding: 16px;
+  }
+#tab-accueil .terrain-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+#tab-accueil .terrain-loc{
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+#tab-accueil .terrain-bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+#tab-accueil .terrain-price{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+  }
+#tab-accueil .terrain-price span{
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+  }
+#tab-accueil .terrain-stars{
+    display: flex;
+    gap: 1px;
+    font-size: 10px;
+    color: #FBBF24;
+  }
+
+  /* MATCHS */
+#tab-accueil .match-list{
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+#tab-accueil .match-card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+#tab-accueil .match-date{
+    text-align: center;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 8px 10px;
+    min-width: 46px;
+  }
+#tab-accueil .match-day{ font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+#tab-accueil .match-num{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--accent);
+  }
+#tab-accueil .match-info{ flex: 1; }
+#tab-accueil .match-title{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+#tab-accueil .match-meta{
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    gap: 12px;
+  }
+#tab-accueil .match-right{ text-align: right; }
+#tab-accueil .match-level{
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+#tab-accueil .level-open{ background: rgba(74,143,232,0.12); color: var(--accent); border: 1px solid rgba(74,143,232,0.25); }
+#tab-accueil .level-priv{ background: rgba(26,95,191,0.12); color: #7EB8F7; border: 1px solid rgba(26,95,191,0.3); }
+#tab-accueil .match-spots{ font-size: 11px; color: var(--muted); }
+#tab-accueil .match-spots strong{ color: var(--text); }
+
+  /* PLAYERS ROW */
+#tab-accueil .players-row{
+    display: flex;
+    margin-top: 8px;
+  }
+#tab-accueil .player-avatar-sm{
+    width: 22px; height: 22px;
+    border-radius: 7px;
+    border: 1.5px solid var(--bg);
+    margin-right: -6px;
+    font-size: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* CLASSEMENT */
+#tab-accueil .ranking-list{
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+#tab-accueil .rank-card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+#tab-accueil .rank-card.top1{ border-color: rgba(74,143,232,0.3); background: linear-gradient(135deg, rgba(74,143,232,0.06), var(--card)); }
+#tab-accueil .rank-pos{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    min-width: 26px;
+    color: var(--muted);
+  }
+#tab-accueil .rank-pos.gold{ color: var(--accent); }
+#tab-accueil .rank-avatar{
+    width: 36px; height: 36px;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+#tab-accueil .rank-info{ flex: 1; }
+#tab-accueil .rank-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+  }
+#tab-accueil .rank-city{ font-size: 11px; color: var(--muted); margin-top: 1px; }
+#tab-accueil .rank-score{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--accent);
+  }
+#tab-accueil .rank-badge{
+    font-size: 10px;
+    color: var(--muted);
+    display: block;
+    text-align: right;
+    margin-top: 1px;
+  }
+#tab-accueil .rank-trend{ font-size: 12px; margin-left: 4px; }
+
+  /* BOTTOM NAV */
+#tab-accueil .bottom-nav{
+    position: sticky;
+    bottom: 0;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 10px 24px 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+#tab-accueil .nav-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+  }
+#tab-accueil .nav-icon{
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+#tab-accueil .nav-item.active .nav-icon{
+    background: rgba(74,143,232,0.12);
+  }
+#tab-accueil .nav-label{
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+#tab-accueil .nav-item.active .nav-label{ color: var(--accent); }
+
+  /* NAV spacing fix for 5 equal tabs */
+#tab-accueil .bottom-nav{ justify-content: space-around; }
+
+  /* CLUBS FAVORIS */
+#tab-accueil .clubs-fav{
+    display: flex;
+    gap: 14px;
+    padding: 0 24px;
+  }
+#tab-accueil .club-fav-card{
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+#tab-accueil .club-fav-icon{
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+  }
+#tab-accueil .club-fav-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    text-align: center;
+    color: var(--text);
+    line-height: 1.3;
+  }
+#tab-accueil .club-fav-dispo{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    color: var(--muted);
+  }
+#tab-accueil .club-fav-dispo .dot{ width: 5px; height: 5px; border-radius: 50%; background: #4ade80; }
+
+  /* MY STATS STRIP */
+#tab-accueil .stats-strip{
+    margin: 24px 24px 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+#tab-accueil .stat-item{ text-align: center; }
+#tab-accueil .stat-num{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+  }
+#tab-accueil .stat-lbl{ font-size: 11px; color: var(--muted); margin-top: 2px; }
+#tab-accueil .stat-divider{
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+  }
+
+/* === clubs === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0F;
+    --surface: #111118;
+    --surface2: #18181F;
+    --border: rgba(255,255,255,0.07);
+    --accent: #4A8FE8;
+    --accent2: #1A5FBF;
+    --text: #F0F0F5;
+    --muted: #6B6B7E;
+    --card: #13131A;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 0 40px;
+  }
+
+  .phone {
+    width: 390px;
+    min-height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 0 8px #0d0d12,
+      0 40px 80px rgba(0,0,0,0.8),
+      0 0 100px rgba(74,143,232,0.06);
+    display: flex;
+    flex-direction: column;
+    height: 844px;
+  }
+
+#tab-clubs .status-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+#tab-clubs .status-bar .time{ font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
+#tab-clubs .status-icons{ display: flex; gap: 5px; align-items: center; }
+
+#tab-clubs .header{
+    padding: 16px 20px 0;
+    flex-shrink: 0;
+  }
+#tab-clubs .header-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+#tab-clubs .page-title{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+  }
+#tab-clubs .map-toggle{
+    display: flex;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3px;
+    gap: 2px;
+  }
+#tab-clubs .toggle-btn{
+    padding: 7px 13px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    background: none;
+    transition: all 0.15s;
+  }
+#tab-clubs .toggle-btn.active{
+    background: var(--accent);
+    color: #0A0A0F;
+  }
+
+#tab-clubs .search-bar{
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+#tab-clubs .search-bar input{
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    flex: 1;
+  }
+#tab-clubs .search-bar input::placeholder{ color: var(--muted); }
+#tab-clubs .search-loc{
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    white-space: nowrap;
+  }
+
+#tab-clubs .filters{
+    display: flex;
+    gap: 8px;
+    padding-bottom: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+#tab-clubs .filters::-webkit-scrollbar{ display: none; }
+#tab-clubs .filter-pill{
+    white-space: nowrap;
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+#tab-clubs .filter-pill.active{
+    background: var(--accent);
+    color: #0A0A0F;
+    border-color: var(--accent);
+  }
+
+#tab-clubs .scroll-content{
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+  }
+#tab-clubs .scroll-content::-webkit-scrollbar{ display: none; }
+
+  /* MAP */
+#tab-clubs .map-container{
+    height: 330px;
+    background: #0D1520;
+    position: relative;
+    overflow: hidden;
+  }
+#tab-clubs .map-grid{
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(74,143,232,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,143,232,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+#tab-clubs .map-road{ position: absolute; background: rgba(255,255,255,0.055); }
+#tab-clubs .map-road.h{ height: 3px; left: 0; right: 0; }
+#tab-clubs .map-road.v{ width: 3px; top: 0; bottom: 0; }
+#tab-clubs .map-road.thick{ background: rgba(255,255,255,0.09); }
+#tab-clubs .map-road.h.thick{ height: 7px; }
+#tab-clubs .map-road.v.thick{ width: 7px; }
+#tab-clubs .map-block{
+    position: absolute;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.035);
+  }
+#tab-clubs .map-park{
+    position: absolute;
+    border-radius: 6px;
+    background: rgba(74,180,90,0.055);
+    border: 1px solid rgba(74,180,90,0.1);
+  }
+#tab-clubs .user-pin{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+  }
+#tab-clubs .user-dot{
+    width: 13px; height: 13px;
+    background: #fff;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 0 5px rgba(74,143,232,0.18), 0 0 18px rgba(74,143,232,0.35);
+  }
+#tab-clubs .club-pin{
+    position: absolute;
+    transform: translate(-50%, -100%);
+    cursor: pointer;
+    z-index: 10;
+  }
+#tab-clubs .pin-bubble{
+    background: var(--accent);
+    color: #0A0A0F;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    padding: 5px 9px;
+    border-radius: 9px;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(74,143,232,0.45);
+    position: relative;
+  }
+#tab-clubs .pin-bubble::after{
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--accent);
+  }
+#tab-clubs .club-pin.selected .pin-bubble{
+    background: #fff;
+    color: #0A0A0F;
+    box-shadow: 0 6px 22px rgba(255,255,255,0.25);
+    transform: scale(1.08);
+  }
+#tab-clubs .club-pin.selected .pin-bubble::after{ border-top-color: #fff; }
+#tab-clubs .club-pin.dim .pin-bubble{
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
+#tab-clubs .club-pin.dim .pin-bubble::after{ border-top-color: var(--surface2); }
+#tab-clubs .map-fade{
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+    pointer-events: none;
+  }
+#tab-clubs .map-controls{
+    position: absolute; right: 14px; top: 14px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+#tab-clubs .map-ctrl{
+    width: 34px; height: 34px;
+    background: rgba(10,10,15,0.82);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; cursor: pointer; color: var(--text);
+    font-weight: 700; font-family: 'Syne', sans-serif;
+  }
+#tab-clubs .map-count{
+    position: absolute; bottom: 18px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10,10,15,0.82);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 11px; font-weight: 700;
+    color: var(--text); white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+  }
+#tab-clubs .map-count span{ color: var(--accent); }
+
+  /* SELECTED PEEK */
+#tab-clubs .peek-card{
+    margin: -10px 14px 0;
+    background: var(--card);
+    border: 1px solid rgba(74,143,232,0.28);
+    border-radius: 16px;
+    padding: 13px 14px;
+    display: flex;
+    gap: 11px;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+    box-shadow: 0 -8px 28px rgba(0,0,0,0.55);
+  }
+#tab-clubs .peek-icon{
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #0D1F3C, #1A3A6B, #2B5BAD);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+#tab-clubs .peek-info{ flex: 1; min-width: 0; }
+#tab-clubs .peek-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 13px; margin-bottom: 2px;
+  }
+#tab-clubs .peek-meta{ font-size: 10px; color: var(--muted); margin-bottom: 6px; }
+#tab-clubs .peek-slots{ display: flex; gap: 4px; }
+#tab-clubs .peek-slot{
+    padding: 3px 7px;
+    border-radius: 6px; font-size: 10px; font-weight: 700;
+    background: rgba(74,143,232,0.1);
+    border: 1px solid rgba(74,143,232,0.22);
+    color: var(--accent);
+    font-family: 'Syne', sans-serif;
+  }
+#tab-clubs .peek-btn{
+    background: var(--accent); color: #0A0A0F;
+    border: none; border-radius: 10px;
+    padding: 9px 13px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px;
+    cursor: pointer; flex-shrink: 0;
+  }
+#tab-clubs .swipe-bar{
+    width: 34px; height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin: 8px auto 0;
+  }
+
+  /* NEARBY LIST (below map) */
+#tab-clubs .nearby-section{ padding: 12px 16px 0; }
+#tab-clubs .nearby-label{
+    font-size: 11px; color: var(--muted);
+    font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    display: flex; justify-content: space-between;
+  }
+#tab-clubs .nearby-label a{ color: var(--accent); font-size: 11px; }
+
+  /* CLUB CARD */
+#tab-clubs .club-card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+#tab-clubs .club-card-img{
+    height: 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+#tab-clubs .ci1{ background: linear-gradient(135deg, #0D1F3C, #1A3A6B, #2B5BAD); }
+#tab-clubs .ci2{ background: linear-gradient(135deg, #0A1E35, #1E3A7A, #2D5FC4); }
+#tab-clubs .ci3{ background: linear-gradient(135deg, #0C1F30, #1A3F5C, #2A6496); }
+#tab-clubs .ci4{ background: linear-gradient(135deg, #1A0A2E, #2D1B5C, #4A2D8F); }
+#tab-clubs .card-court{
+    width: 110px; height: 72px;
+    border: 2px solid rgba(255,255,255,0.13);
+    border-radius: 3px;
+    position: relative; opacity: 0.55;
+  }
+#tab-clubs .card-court::before{
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0; height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+#tab-clubs .card-court::after{
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%; width: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+#tab-clubs .img-badges{
+    position: absolute; top: 9px; left: 9px;
+    display: flex; gap: 5px;
+  }
+#tab-clubs .ibadge{
+    background: rgba(10,10,15,0.72);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px 8px;
+    font-size: 9px; font-weight: 700; color: var(--text);
+  }
+#tab-clubs .ibadge.green{
+    background: rgba(74,222,128,0.14);
+    border-color: rgba(74,222,128,0.3);
+    color: #4ade80;
+  }
+#tab-clubs .ibadge.blue{
+    background: rgba(74,143,232,0.18);
+    border-color: rgba(74,143,232,0.35);
+    color: var(--accent);
+  }
+#tab-clubs .fav-btn{
+    position: absolute; top: 9px; right: 9px;
+    width: 28px; height: 28px;
+    background: rgba(10,10,15,0.72);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; cursor: pointer;
+  }
+#tab-clubs .club-card-body{ padding: 12px 14px 14px; }
+#tab-clubs .card-row1{
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 5px;
+  }
+#tab-clubs .card-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 14px;
+  }
+#tab-clubs .card-rating{
+    display: flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 700; color: #FBBF24;
+  }
+#tab-clubs .card-rating span{ color: var(--muted); font-weight: 400; font-size: 10px; }
+#tab-clubs .card-meta{
+    font-size: 10px; color: var(--muted);
+    display: flex; gap: 12px; margin-bottom: 10px;
+  }
+#tab-clubs .card-bottom{
+    display: flex; justify-content: space-between; align-items: center;
+  }
+#tab-clubs .slots{ display: flex; gap: 4px; }
+#tab-clubs .slot{
+    padding: 4px 8px; border-radius: 7px;
+    font-size: 10px; font-weight: 700;
+    background: rgba(74,143,232,0.1);
+    border: 1px solid rgba(74,143,232,0.2);
+    color: var(--accent);
+    font-family: 'Syne', sans-serif;
+  }
+#tab-clubs .slot.off{
+    background: rgba(255,255,255,0.03);
+    border-color: var(--border);
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+#tab-clubs .btn-book{
+    background: var(--accent); color: #0A0A0F;
+    border: none; border-radius: 9px;
+    padding: 7px 13px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px;
+    cursor: pointer;
+  }
+
+  /* LIST VIEW */
+#tab-clubs .list-section{ padding: 0 16px; }
+#tab-clubs .list-label{
+    font-size: 11px; color: var(--muted);
+    font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 14px 0 10px;
+  }
+
+  /* VIEW TOGGLE */
+#tab-clubs .view-map{ display: block; }
+#tab-clubs .view-list{ display: none; }
+#tab-clubs .show-list .view-map{ display: none; }
+#tab-clubs .show-list .view-list{ display: block; }
+
+  /* BOTTOM NAV */
+#tab-clubs .bottom-nav{
+    background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 10px 24px 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-shrink: 0;
+  }
+#tab-clubs .nav-item{ display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+#tab-clubs .nav-icon{ width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+#tab-clubs .nav-item.active .nav-icon{ background: rgba(74,143,232,0.12); }
+#tab-clubs .nav-label{ font-size: 10px; font-weight: 700; color: var(--muted); }
+#tab-clubs .nav-item.active .nav-label{ color: var(--accent); }
+
+/* === feed === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0F;
+    --surface: #111118;
+    --surface2: #18181F;
+    --border: rgba(255,255,255,0.07);
+    --accent: #4A8FE8;
+    --accent2: #1A5FBF;
+    --text: #F0F0F5;
+    --muted: #6B6B7E;
+    --card: #13131A;
+    --green: #4ade80;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 0 40px;
+  }
+
+  .phone {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 0 8px #0d0d12,
+      0 40px 80px rgba(0,0,0,0.8),
+      0 0 100px rgba(74,143,232,0.06);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* STATUS BAR */
+#tab-feed .status-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+#tab-feed .status-bar .time{ font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
+#tab-feed .status-icons{ display: flex; gap: 5px; align-items: center; }
+
+  /* HEADER */
+#tab-feed .header{
+    padding: 16px 24px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+#tab-feed .page-title{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+  }
+#tab-feed .header-actions{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+#tab-feed .icon-btn{
+    width: 38px; height: 38px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    position: relative;
+  }
+#tab-feed .notif-dot{
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: absolute;
+    top: 7px; right: 7px;
+    border: 1.5px solid var(--bg);
+  }
+
+  /* SCROLL */
+#tab-feed .scroll-content{
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+  }
+#tab-feed .scroll-content::-webkit-scrollbar{ display: none; }
+
+  /* STORIES */
+#tab-feed .stories-row{
+    display: flex;
+    gap: 12px;
+    padding: 0 20px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+#tab-feed .stories-row::-webkit-scrollbar{ display: none; }
+
+#tab-feed .story-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+#tab-feed .story-ring{
+    width: 58px; height: 58px;
+    border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+#tab-feed .story-ring.seen{
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    padding: 1.5px;
+  }
+#tab-feed .story-ring.add{
+    background: var(--surface2);
+    border: 1.5px dashed rgba(255,255,255,0.15);
+    padding: 0;
+  }
+#tab-feed .story-avatar{
+    width: 100%; height: 100%;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    background: var(--bg);
+  }
+#tab-feed .story-avatar.club{
+    font-size: 22px;
+    background: linear-gradient(135deg, #0D1F3C, #1A3A6B);
+  }
+#tab-feed .story-add-icon{
+    width: 100%; height: 100%;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    color: var(--muted);
+    background: var(--surface2);
+  }
+#tab-feed .story-name{
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    max-width: 58px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+#tab-feed .story-name.unseen{ color: var(--text); }
+
+  /* FEED TABS */
+#tab-feed .feed-tabs{
+    display: flex;
+    gap: 0;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  }
+#tab-feed .feed-tab{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--muted);
+    padding: 10px 16px;
+    cursor: pointer;
+    position: relative;
+  }
+#tab-feed .feed-tab.active{
+    color: var(--accent);
+  }
+#tab-feed .feed-tab.active::after{
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 16px; right: 16px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* FEED CARDS */
+#tab-feed .feed-card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    margin: 0 16px 14px;
+    overflow: hidden;
+  }
+
+  /* Card header */
+#tab-feed .feed-card-header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 14px 10px;
+  }
+#tab-feed .feed-avatar{
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+#tab-feed .feed-avatar.club-avatar{
+    font-size: 18px;
+  }
+#tab-feed .feed-author{
+    flex: 1;
+  }
+#tab-feed .feed-author-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+  }
+#tab-feed .feed-author-sub{
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+#tab-feed .feed-more{
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+
+  /* Club post - visual area */
+#tab-feed .feed-visual{
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+#tab-feed .fv1{ background: linear-gradient(135deg, #0D1F3C, #1A3A6B, #2B5BAD); }
+#tab-feed .fv2{ background: linear-gradient(135deg, #0A1E35, #1E3A7A, #2D5FC4); }
+#tab-feed .fv3{ background: linear-gradient(135deg, #0C1830, #1A2F5C, #2B4FAD); }
+#tab-feed .fv-court{
+    width: 150px; height: 100px;
+    border: 2px solid rgba(255,255,255,0.18);
+    border-radius: 4px;
+    position: relative;
+    opacity: 0.7;
+  }
+#tab-feed .fv-court::before{
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0; height: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+#tab-feed .fv-court::after{
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%; width: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+#tab-feed .fv-overlay-text{
+    position: absolute;
+    bottom: 12px; left: 14px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.2;
+  }
+#tab-feed .fv-overlay-sub{
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+#tab-feed .fv-badge{
+    position: absolute;
+    top: 12px; right: 12px;
+    background: rgba(74,143,232,0.2);
+    border: 1px solid rgba(74,143,232,0.4);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* Post text */
+#tab-feed .feed-text{
+    padding: 10px 14px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+#tab-feed .feed-text strong{ color: var(--accent); }
+
+  /* Match result card */
+#tab-feed .match-result{
+    margin: 10px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+#tab-feed .match-result-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+#tab-feed .match-result-label{
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+#tab-feed .match-result-badge{
+    padding: 3px 8px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+  }
+#tab-feed .result-win{ background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+#tab-feed .result-lose{ background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+#tab-feed .match-teams{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+#tab-feed .team{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+#tab-feed .team-avatars{
+    display: flex;
+    gap: -4px;
+  }
+#tab-feed .t-avatar{
+    width: 28px; height: 28px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: #fff;
+    border: 1.5px solid var(--card);
+    margin-right: -4px;
+  }
+#tab-feed .team-names{
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.4;
+  }
+#tab-feed .team-names strong{ color: var(--text); display: block; }
+#tab-feed .score-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+#tab-feed .score-main{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -1px;
+    color: var(--text);
+  }
+#tab-feed .score-sets{
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* Activity card */
+#tab-feed .activity-line{
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+#tab-feed .activity-line:not(:last-child){
+    border-bottom: 1px solid var(--border);
+  }
+#tab-feed .act-avatar{
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+#tab-feed .act-content{ flex: 1; }
+#tab-feed .act-text{
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.45;
+  }
+#tab-feed .act-text strong{ color: var(--accent); }
+#tab-feed .act-time{
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+#tab-feed .act-icon{
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Video card */
+#tab-feed .feed-video{
+    width: 100%;
+    height: 190px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+#tab-feed .fvid1{ background: linear-gradient(135deg, #0A1A2E, #1A3560, #1E4A8F); }
+#tab-feed .video-play{
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid rgba(255,255,255,0.25);
+  }
+#tab-feed .video-duration{
+    position: absolute;
+    bottom: 10px; right: 12px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 6px;
+    padding: 2px 7px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+  }
+#tab-feed .video-label{
+    position: absolute;
+    top: 10px; left: 12px;
+    background: rgba(239,68,68,0.85);
+    border-radius: 6px;
+    padding: 2px 7px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+
+  /* ACTIONS BAR */
+#tab-feed .feed-actions{
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 10px 14px 14px;
+    border-top: 1px solid var(--border);
+    margin-top: 10px;
+  }
+#tab-feed .action-btn{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 5px 10px 5px 0;
+    font-weight: 600;
+  }
+#tab-feed .action-btn.liked{ color: #f87171; }
+#tab-feed .action-btn svg{ flex-shrink: 0; }
+#tab-feed .action-spacer{ flex: 1; }
+#tab-feed .action-share{
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  /* BOTTOM NAV */
+#tab-feed .bottom-nav{
+    background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 10px 24px 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-shrink: 0;
+  }
+#tab-feed .nav-item{ display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+#tab-feed .nav-icon{ width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+#tab-feed .nav-item.active .nav-icon{ background: rgba(74,143,232,0.12); }
+#tab-feed .nav-label{ font-size: 10px; font-weight: 700; color: var(--muted); }
+#tab-feed .nav-item.active .nav-label{ color: var(--accent); }
+
+/* === tournois === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0F;
+    --surface2: #18181F;
+    --border: rgba(255,255,255,0.07);
+    --accent: #4A8FE8;
+    --accent2: #1A5FBF;
+    --text: #F0F0F5;
+    --muted: #6B6B7E;
+    --card: #13131A;
+    --gold: #F5A623;
+    --green: #4ade80;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 0 40px;
+  }
+
+  .phone {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    box-shadow: 0 0 0 8px #0d0d12, 0 40px 80px rgba(0,0,0,0.8), 0 0 100px rgba(74,143,232,0.06);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* STATUS BAR */
+#tab-tournois .status-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px 0;
+    flex-shrink: 0;
+  }
+#tab-tournois .time{ font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
+#tab-tournois .status-icons{ display: flex; gap: 5px; align-items: center; }
+
+  /* HEADER */
+#tab-tournois .header{
+    padding: 16px 24px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+#tab-tournois .page-title{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+  }
+#tab-tournois .header-right{
+    display: flex;
+    gap: 8px;
+  }
+#tab-tournois .icon-btn{
+    width: 38px; height: 38px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* SCROLL */
+#tab-tournois .scroll-content{
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+  }
+#tab-tournois .scroll-content::-webkit-scrollbar{ display: none; }
+
+  /* TABS */
+#tab-tournois .tabs{
+    display: flex;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+#tab-tournois .tab{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--muted);
+    padding: 10px 16px;
+    cursor: pointer;
+    position: relative;
+  }
+#tab-tournois .tab.active{ color: var(--accent); }
+#tab-tournois .tab.active::after{
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 16px; right: 16px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+#tab-tournois .tab-badge{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px; height: 16px;
+    background: var(--accent);
+    color: #0A0A0F;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 800;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+
+  /* FILTERS */
+#tab-tournois .filters{
+    display: flex;
+    gap: 7px;
+    padding: 0 20px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+#tab-tournois .filters::-webkit-scrollbar{ display: none; }
+#tab-tournois .filter-pill{
+    white-space: nowrap;
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+#tab-tournois .filter-pill.active{
+    background: var(--accent);
+    color: #0A0A0F;
+    border-color: var(--accent);
+  }
+
+  /* HERO CARD */
+#tab-tournois .hero-card{
+    margin: 0 16px 18px;
+    border-radius: 22px;
+    overflow: hidden;
+    position: relative;
+    height: 200px;
+    cursor: pointer;
+  }
+#tab-tournois .hero-bg{
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #07122B, #0D2254, #1A3A8F, #2B5BAD);
+  }
+#tab-tournois .hero-grid{
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(74,143,232,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,143,232,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+#tab-tournois .hero-glow{
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(74,143,232,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+#tab-tournois .hero-court{
+    position: absolute;
+    right: 20px; top: 50%;
+    transform: translateY(-50%);
+    width: 100px; height: 66px;
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    opacity: 0.5;
+  }
+#tab-tournois .hero-court::before{
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0; height: 1px;
+    background: rgba(255,255,255,0.12);
+  }
+#tab-tournois .hero-court::after{
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%; width: 1px;
+    background: rgba(255,255,255,0.12);
+  }
+#tab-tournois .hero-content{
+    position: absolute;
+    inset: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+#tab-tournois .hero-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+#tab-tournois .hero-badge{
+    background: rgba(245,166,35,0.2);
+    border: 1px solid rgba(245,166,35,0.4);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Syne', sans-serif;
+  }
+#tab-tournois .hero-spots{
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+  }
+#tab-tournois .hero-spots strong{ color: #f87171; }
+#tab-tournois .hero-title{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+#tab-tournois .hero-sub{
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+  }
+#tab-tournois .hero-bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+#tab-tournois .hero-meta{
+    display: flex;
+    gap: 14px;
+  }
+#tab-tournois .hero-meta-item{
+    display: flex;
+    flex-direction: column;
+  }
+#tab-tournois .hero-meta-val{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+  }
+#tab-tournois .hero-meta-lbl{
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+  }
+#tab-tournois .hero-btn{
+    background: var(--accent);
+    color: #0A0A0F;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(74,143,232,0.35);
+  }
+
+  /* SECTION LABEL */
+#tab-tournois .section-lbl{
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 0 20px 10px;
+  }
+
+  /* TOURNAMENT CARD */
+#tab-tournois .t-card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    margin: 0 16px 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+#tab-tournois .t-card:hover{ border-color: rgba(74,143,232,0.25); }
+
+#tab-tournois .t-card-top{
+    height: 90px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+#tab-tournois .tc1{ background: linear-gradient(135deg, #0A1E35, #1A3570, #2550A8); }
+#tab-tournois .tc2{ background: linear-gradient(135deg, #0D1A30, #1A2D5C, #2040A0); }
+#tab-tournois .tc3{ background: linear-gradient(135deg, #1A0A2E, #2D1B5C, #4530A0); }
+#tab-tournois .tc4{ background: linear-gradient(135deg, #0A1F2E, #12305C, #1E4A8F); }
+
+#tab-tournois .t-card-court{
+    width: 80px; height: 52px;
+    border: 1.5px solid rgba(255,255,255,0.13);
+    border-radius: 2px;
+    opacity: 0.5;
+    position: relative;
+  }
+#tab-tournois .t-card-court::before{
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0; height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+#tab-tournois .t-card-court::after{
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%; width: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+
+#tab-tournois .t-top-badges{
+    position: absolute;
+    top: 10px; left: 10px;
+    display: flex; gap: 5px;
+  }
+#tab-tournois .t-badge{
+    padding: 3px 8px;
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+  }
+#tab-tournois .tb-open{ background: rgba(74,222,128,0.15); color: var(--green); border: 1px solid rgba(74,222,128,0.3); }
+#tab-tournois .tb-soon{ background: rgba(245,166,35,0.15); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); }
+#tab-tournois .tb-full{ background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+#tab-tournois .tb-level{ background: rgba(74,143,232,0.15); color: var(--accent); border: 1px solid rgba(74,143,232,0.3); }
+
+#tab-tournois .t-card-body{ padding: 12px 14px 14px; }
+#tab-tournois .t-card-row1{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+  }
+#tab-tournois .t-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: -0.2px;
+  }
+#tab-tournois .t-buyin{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--accent);
+  }
+#tab-tournois .t-meta{
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+#tab-tournois .t-bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+#tab-tournois .t-progress-wrap{
+    flex: 1;
+    margin-right: 12px;
+  }
+#tab-tournois .t-progress-label{
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+#tab-tournois .t-progress-label strong{ color: var(--text); }
+#tab-tournois .t-progress-bar{
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+#tab-tournois .t-progress-fill{
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+#tab-tournois .t-progress-fill.almost{ background: linear-gradient(90deg, #C05020, #F87171); }
+#tab-tournois .btn-inscrit{
+    background: rgba(74,222,128,0.1);
+    border: 1px solid rgba(74,222,128,0.3);
+    color: var(--green);
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+#tab-tournois .btn-inscrire{
+    background: var(--accent);
+    color: #0A0A0F;
+    border: none;
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+#tab-tournois .btn-complet{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    cursor: default;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* MY INSCRIPTION CARD */
+#tab-tournois .my-card{
+    background: var(--card);
+    border: 1px solid rgba(74,143,232,0.2);
+    border-radius: 16px;
+    margin: 0 16px 10px;
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    cursor: pointer;
+  }
+#tab-tournois .my-card-icon{
+    width: 46px; height: 46px;
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+#tab-tournois .my-card-info{ flex: 1; min-width: 0; }
+#tab-tournois .my-card-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+#tab-tournois .my-card-meta{ font-size: 11px; color: var(--muted); }
+#tab-tournois .my-card-status{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+#tab-tournois .status-pill{
+    padding: 3px 9px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+  }
+#tab-tournois .sp-confirmed{ background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+#tab-tournois .sp-pending{ background: rgba(245,166,35,0.12); color: var(--gold); border: 1px solid rgba(245,166,35,0.25); }
+#tab-tournois .countdown{
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* BOTTOM NAV */
+#tab-tournois .bottom-nav{
+    background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 10px 24px 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-shrink: 0;
+  }
+#tab-tournois .nav-item{ display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+#tab-tournois .nav-icon{ width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+#tab-tournois .nav-item.active .nav-icon{ background: rgba(74,143,232,0.12); }
+#tab-tournois .nav-label{ font-size: 10px; font-weight: 700; color: var(--muted); }
+#tab-tournois .nav-item.active .nav-label{ color: var(--accent); }
+
+/* === profil === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0F;
+    --surface2: #18181F;
+    --border: rgba(255,255,255,0.07);
+    --accent: #4A8FE8;
+    --accent2: #1A5FBF;
+    --text: #F0F0F5;
+    --muted: #6B6B7E;
+    --card: #13131A;
+    --gold: #F5A623;
+    --green: #4ade80;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 0 40px;
+    min-height: 100vh;
+  }
+
+  .phone {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    box-shadow: 0 0 0 8px #0d0d12, 0 40px 80px rgba(0,0,0,0.8), 0 0 100px rgba(74,143,232,0.06);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* STATUS BAR */
+#tab-profil .status-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px 0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+  }
+#tab-profil .time{ font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
+#tab-profil .status-icons{ display: flex; gap: 5px; align-items: center; }
+
+  /* SCROLL */
+#tab-profil .scroll-content{
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+  }
+#tab-profil .scroll-content::-webkit-scrollbar{ display: none; }
+
+  /* COVER + HEADER */
+#tab-profil .profile-cover{
+    height: 130px;
+    position: relative;
+    background: linear-gradient(135deg, #07122B, #0D2254, #1A3A8F, #2B5BAD);
+    overflow: hidden;
+    margin-top: -44px;
+    padding-top: 44px;
+    flex-shrink: 0;
+  }
+#tab-profil .cover-grid{
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(74,143,232,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,143,232,0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+#tab-profil .cover-glow{
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(74,143,232,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+#tab-profil .cover-court{
+    position: absolute;
+    right: 24px; bottom: 12px;
+    width: 80px; height: 52px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 2px;
+    opacity: 0.4;
+  }
+#tab-profil .cover-court::before{
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0; height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+#tab-profil .cover-court::after{
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%; width: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+#tab-profil .cover-actions{
+    position: absolute;
+    top: 50px; right: 16px;
+    display: flex; gap: 7px;
+  }
+#tab-profil .cover-btn{
+    width: 32px; height: 32px;
+    background: rgba(10,10,15,0.5);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 13px;
+  }
+
+  /* AVATAR SECTION */
+#tab-profil .avatar-section{
+    padding: 0 20px 0;
+    position: relative;
+    flex-shrink: 0;
+    margin-top: -36px;
+    z-index: 5;
+  }
+#tab-profil .avatar-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 12px;
+  }
+#tab-profil .avatar-wrap{
+    position: relative;
+  }
+#tab-profil .avatar{
+    width: 72px; height: 72px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #4A8FE8, #1A5FBF);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    color: #fff;
+    border: 3px solid var(--bg);
+  }
+#tab-profil .avatar-level{
+    position: absolute;
+    bottom: -5px; right: -5px;
+    background: var(--gold);
+    color: #0A0A0F;
+    border-radius: 8px;
+    padding: 2px 6px;
+    font-size: 9px;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    border: 2px solid var(--bg);
+  }
+#tab-profil .avatar-btns{
+    display: flex;
+    gap: 7px;
+    padding-bottom: 4px;
+  }
+#tab-profil .btn-edit{
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    cursor: pointer;
+  }
+#tab-profil .btn-share{
+    width: 34px; height: 34px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* NAME */
+#tab-profil .profile-name-block{
+    padding: 0 20px 14px;
+    flex-shrink: 0;
+  }
+#tab-profil .profile-name{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.4px;
+    margin-bottom: 3px;
+  }
+#tab-profil .profile-handle{
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+#tab-profil .profile-handle span{
+    color: var(--accent);
+    font-weight: 700;
+  }
+#tab-profil .verified{
+    width: 16px; height: 16px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+  }
+
+  /* STATS GRID */
+#tab-profil .stats-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 0 16px 16px;
+  }
+#tab-profil .stat-box{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+#tab-profil .stat-val{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--text);
+  }
+#tab-profil .stat-val.blue{ color: var(--accent); }
+#tab-profil .stat-val.gold{ color: var(--gold); }
+#tab-profil .stat-val.green{ color: var(--green); }
+#tab-profil .stat-lbl{
+    font-size: 9px;
+    color: var(--muted);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* SECTION HEADER */
+#tab-profil .section-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 10px;
+  }
+#tab-profil .section-title{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+  }
+#tab-profil .section-link{
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* PROGRESSION CHART */
+#tab-profil .chart-card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    margin: 0 16px 16px;
+    padding: 16px;
+  }
+#tab-profil .chart-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+#tab-profil .chart-title{
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+  }
+#tab-profil .chart-period{
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+#tab-profil .chart-area{
+    height: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+#tab-profil .chart-area svg{
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+#tab-profil .chart-labels{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+  }
+#tab-profil .chart-label{
+    font-size: 9px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+#tab-profil .chart-current{
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+#tab-profil .chart-val-big{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: var(--text);
+    letter-spacing: -1px;
+  }
+#tab-profil .chart-delta{
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+  }
+#tab-profil .chart-sublbl{
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* MATCH HISTORY */
+#tab-profil .match-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+#tab-profil .match-row:last-child{ border-bottom: none; }
+#tab-profil .match-result-dot{
+    width: 28px; height: 28px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+#tab-profil .dot-win{ background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+#tab-profil .dot-lose{ background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.22); }
+#tab-profil .match-info{ flex: 1; min-width: 0; }
+#tab-profil .match-vs{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+  }
+#tab-profil .match-meta-row{ font-size: 10px; color: var(--muted); }
+#tab-profil .match-score-col{
+    text-align: right;
+    flex-shrink: 0;
+  }
+#tab-profil .match-score{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--text);
+  }
+#tab-profil .match-pts{
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 700;
+    margin-top: 1px;
+  }
+#tab-profil .match-pts.neg{ color: #f87171; }
+
+  /* PALMARES */
+#tab-profil .palmares-row{
+    display: flex;
+    gap: 8px;
+    padding: 0 16px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+#tab-profil .palmares-row::-webkit-scrollbar{ display: none; }
+#tab-profil .trophy-card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    min-width: 96px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+#tab-profil .trophy-icon{ font-size: 24px; }
+#tab-profil .trophy-pos{
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: var(--gold);
+  }
+#tab-profil .trophy-name{
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* AMIS */
+#tab-profil .friends-row{
+    display: flex;
+    gap: 10px;
+    padding: 0 16px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+#tab-profil .friends-row::-webkit-scrollbar{ display: none; }
+#tab-profil .friend-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+#tab-profil .friend-avatar{
+    width: 48px; height: 48px;
+    border-radius: 15px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    position: relative;
+  }
+#tab-profil .friend-online{
+    position: absolute;
+    bottom: 2px; right: 2px;
+    width: 9px; height: 9px;
+    background: var(--green);
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+  }
+#tab-profil .friend-name{
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    max-width: 52px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+#tab-profil .friend-add{
+    width: 48px; height: 48px;
+    border-radius: 15px;
+    background: var(--surface2);
+    border: 1.5px dashed rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  /* SETTINGS */
+#tab-profil .settings-list{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    margin: 0 16px 16px;
+    overflow: hidden;
+  }
+#tab-profil .setting-row{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+  }
+#tab-profil .setting-row:last-child{ border-bottom: none; }
+#tab-profil .setting-icon{
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+#tab-profil .setting-label{
+    flex: 1;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+#tab-profil .setting-arrow{
+    color: var(--muted);
+    font-size: 14px;
+  }
+#tab-profil .setting-value{
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
+  /* BOTTOM NAV */
+#tab-profil .bottom-nav{
+    background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 10px 24px 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-shrink: 0;
+  }
+#tab-profil .nav-item{ display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+#tab-profil .nav-icon{ width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+#tab-profil .nav-item.active .nav-icon{ background: rgba(74,143,232,0.12); }
+#tab-profil .nav-label{ font-size: 10px; font-weight: 700; color: var(--muted); }
+#tab-profil .nav-item.active .nav-label{ color: var(--accent); }
+
+#tab-profil .divider{ height: 1px; background: var(--border); margin: 0 0 16px; }
+
+#tab-profil .profile-cover {
+  height: 0 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+#tab-profil .avatar-section {
+  margin-top: 0 !important;
+  padding-top: 16px !important;
+}
+#tab-profil .hero-card {
+  margin: 20px 16px 32px !important;
+}
+#tab-accueil .hero-card {
+  margin: 20px 16px 32px !important;
+}
+
+</style>
+</head>
+<body>
+<div class="app-shell">
+<div class="tab-page active" id="tab-accueil">
+<div class="scroll-content">
+
+    <!-- HEADER -->
+    <div class="header" style="position:relative;">
+      <div class="header-left"></div>
+      <div class="logo">Pad<span>'</span>up</div>
+      <div class="msg-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <div class="msg-dot"></div>
+      </div>
+    </div>
+
+    <!-- CLUBS FAVORIS -->
+    <div class="section-header">
+      <div class="section-title">Mes clubs</div>
+    </div>
+
+    <div class="clubs-fav">
+      <div class="club-fav-card">
+        <div class="club-fav-icon">🏟️</div>
+        <div class="club-fav-name">QG Padel Club</div>
+        <div class="club-fav-dispo"><div class="dot"></div>3 dispo</div>
+      </div>
+      <div class="club-fav-card">
+        <div class="club-fav-icon">🎾</div>
+        <div class="club-fav-name">Cocoon Padel</div>
+        <div class="club-fav-dispo"><div class="dot"></div>1 dispo</div>
+      </div>
+      <div class="club-fav-card">
+        <div class="club-fav-icon">⚡</div>
+        <div class="club-fav-name">ZE Padel Club</div>
+        <div class="club-fav-dispo" style="color:var(--muted)">— Complet</div>
+      </div>
+    </div>
+
+    <!-- HERO CARD -->
+    <div class="hero-card">
+      <div class="hero-tag">🏆 Tournoi ce week-end</div>
+      <div class="hero-title">Open Padel<br>Cocoon Padel Club</div>
+      <div class="hero-sub">Samedi 15 mars · 32 joueurs inscrits · Places limitées</div>
+      <div class="hero-cta">
+        <button class="btn-primary">S'inscrire maintenant</button>
+        <button class="btn-secondary">Voir</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">32</div>
+          <div class="hero-stat-label">Inscrits</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">€50</div>
+          <div class="hero-stat-label">Buy-in</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">4</div>
+          <div class="hero-stat-label">Places restantes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECHERCHE TERRAINS -->
+    <div class="section-header">
+      <div class="section-title">Réserver un terrain</div>
+      <div class="section-link">Voir tout →</div>
+    </div>
+
+    <div class="search-wrap">
+      <div class="search-bar">
+        <span class="search-icon">📍</span>
+        <input type="text" placeholder="Rechercher un club, un quartier...">
+        <div class="search-filter">
+          <span style="font-size:13px; color:#0A0A0F;">⚙</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="filter-pill active">Tous</div>
+      <div class="filter-pill">Disponible maintenant</div>
+      <div class="filter-pill">Intérieur</div>
+      <div class="filter-pill">Extérieur</div>
+      <div class="filter-pill">< 5 km</div>
+    </div>
+
+    <div class="terrain-scroll">
+      <div class="terrain-card">
+        <div class="terrain-img terrain-img-1">
+          <div class="terrain-court"></div>
+          <div class="terrain-badge">⭐ Top</div>
+          <div class="terrain-dispo"><div class="dispo-dot"></div>Dispo 14h</div>
+        </div>
+        <div class="terrain-info">
+          <div class="terrain-name">Club Nation Padel</div>
+          <div class="terrain-loc">📍 Paris 12 · 1.2 km</div>
+          <div class="terrain-bottom">
+            <div class="terrain-price"></div>
+            <div class="terrain-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="terrain-card">
+        <div class="terrain-img terrain-img-2">
+          <div class="terrain-court"></div>
+          <div class="terrain-badge">Indoor</div>
+          <div class="terrain-dispo"><div class="dispo-dot"></div>Dispo 15h</div>
+        </div>
+        <div class="terrain-info">
+          <div class="terrain-name">Padel Bastille</div>
+          <div class="terrain-loc">📍 Paris 11 · 2.1 km</div>
+          <div class="terrain-bottom">
+            <div class="terrain-price"></div>
+            <div class="terrain-stars">★★★★<span style="color:var(--muted)">★</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="terrain-card">
+        <div class="terrain-img terrain-img-3">
+          <div class="terrain-court"></div>
+          <div class="terrain-badge">Outdoor</div>
+          <div class="terrain-dispo"><div class="dispo-dot"></div>Dispo 16h</div>
+        </div>
+        <div class="terrain-info">
+          <div class="terrain-name">Green Padel Club</div>
+          <div class="terrain-loc">📍 Vincennes · 3.8 km</div>
+          <div class="terrain-bottom">
+            <div class="terrain-price"></div>
+            <div class="terrain-stars">★★★★<span style="color:var(--muted)">★</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROCHAINS MATCHS -->
+    <div class="section-header">
+      <div class="section-title">Prochains matchs publics</div>
+      <div class="section-link">Voir tout →</div>
+    </div>
+
+    <div class="match-list">
+      <div class="match-card">
+        <div class="match-date">
+          <div class="match-day">Mar</div>
+          <div class="match-num">14</div>
+        </div>
+        <div class="match-info">
+          <div class="match-title">Match Amical 2v2</div>
+          <div class="match-meta">
+            <span>🕐 19h00</span>
+            <span>📍 Club Nation</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; margin-top:6px;">
+            <span style="font-family:'Syne',sans-serif; font-weight:700; font-size:11px; color:var(--accent); background:rgba(74,143,232,0.12); border:1px solid rgba(74,143,232,0.25); border-radius:100px; padding:2px 8px;">Niv. 4</span>
+          </div>
+          <div class="players-row">
+            <div class="player-avatar-sm" style="background:linear-gradient(135deg,#4A8FE8,#1A5FBF)">TM</div>
+            <div class="player-avatar-sm" style="background:linear-gradient(135deg,#2B6CB0,#4A90D9)">JL</div>
+            <div class="player-avatar-sm" style="background:linear-gradient(135deg,#718096,#4A5568)">+</div>
+          </div>
+        </div>
+        <div class="match-right">
+          <div class="match-level level-open">Ouvert</div>
+          <div class="match-spots"><strong>1</strong> place libre</div>
+        </div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date">
+          <div class="match-day">Mar</div>
+          <div class="match-num">15</div>
+        </div>
+        <div class="match-info">
+          <div class="match-title">Compétition Mixte</div>
+          <div class="match-meta">
+            <span>🕐 10h00</span>
+            <span>📍 Padel Bastille</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; margin-top:6px;">
+            <span style="font-family:'Syne',sans-serif; font-weight:700; font-size:11px; color:var(--accent); background:rgba(74,143,232,0.12); border:1px solid rgba(74,143,232,0.25); border-radius:100px; padding:2px 8px;">Niv. 7</span>
+          </div>
+          <div class="players-row">
+            <div class="player-avatar-sm" style="background:linear-gradient(135deg,#3B6FD4,#6FA3E0)">AL</div>
+            <div class="player-avatar-sm" style="background:linear-gradient(135deg,#1A3F8F,#2B5BAD)">RC</div>
+            <div class="player-avatar-sm" style="background:linear-gradient(135deg,#A0AEC0,#718096)">?</div>
+            <div class="player-avatar-sm" style="background:linear-gradient(135deg,#A0AEC0,#718096)">?</div>
+          </div>
+        </div>
+        <div class="match-right">
+          <div class="match-level level-priv">Niveau 3+</div>
+          <div class="match-spots"><strong>2</strong> places libres</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+
+</div>
+<div class="tab-page" id="tab-clubs">
+<div class="header">
+    <div class="header-top">
+      <div class="page-title">Clubs</div>
+    </div>
+
+    <div class="search-bar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B6B7E" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Nom d'un club, quartier...">
+      <span class="search-loc">📍 Paris</span>
+    </div>
+
+    <div class="filters">
+      <div class="filter-pill active">Tous</div>
+      <div class="filter-pill">Disponible Aujourd'hui</div>
+      <div class="filter-pill">Disponible Demain</div>
+      <div class="filter-pill">🏢 Indoor</div>
+      <div class="filter-pill">☀️ Outdoor</div>
+    </div>
+  </div>
+
+  <div class="scroll-content">
+
+    <!-- MAP VIEW -->
+    <div class="view-map">
+      <div class="map-container">
+        <div class="map-grid"></div>
+
+        <!-- Roads H -->
+        <div class="map-road h" style="top:22%"></div>
+        <div class="map-road h thick" style="top:43%"></div>
+        <div class="map-road h" style="top:63%"></div>
+        <div class="map-road h" style="top:80%"></div>
+        <!-- Roads V -->
+        <div class="map-road v" style="left:18%"></div>
+        <div class="map-road v thick" style="left:40%"></div>
+        <div class="map-road v" style="left:63%"></div>
+        <div class="map-road v" style="left:80%"></div>
+
+        <!-- Blocks -->
+        <div class="map-block" style="top:5%;left:4%;width:55px;height:36px"></div>
+        <div class="map-block" style="top:5%;left:23%;width:70px;height:46px"></div>
+        <div class="map-block" style="top:5%;left:46%;width:75px;height:52px"></div>
+        <div class="map-block" style="top:5%;left:68%;width:55px;height:36px"></div>
+        <div class="map-block" style="top:26%;left:4%;width:46px;height:54px"></div>
+        <div class="map-block" style="top:26%;left:23%;width:64px;height:32px"></div>
+        <div class="map-block" style="top:26%;left:46%;width:50px;height:46px"></div>
+        <div class="map-block" style="top:47%;left:4%;width:58px;height:42px"></div>
+        <div class="map-block" style="top:47%;left:23%;width:50px;height:56px"></div>
+        <div class="map-block" style="top:47%;left:46%;width:36px;height:36px"></div>
+        <div class="map-block" style="top:67%;left:4%;width:65px;height:40px"></div>
+        <div class="map-block" style="top:67%;left:23%;width:55px;height:46px"></div>
+        <div class="map-block" style="top:67%;left:46%;width:72px;height:42px"></div>
+        <div class="map-block" style="top:67%;left:68%;width:50px;height:50px"></div>
+        <!-- Park -->
+        <div class="map-park" style="top:26%;left:66%;width:50px;height:50px"></div>
+
+        <!-- Pins -->
+        <div class="club-pin selected" style="top:40%;left:43%">
+          <div class="pin-bubble">QG Padel · 1.2km</div>
+        </div>
+        <div class="club-pin" style="top:20%;left:63%">
+          <div class="pin-bubble">Cocoon · 2.4km</div>
+        </div>
+        <div class="club-pin dim" style="top:58%;left:24%">
+          <div class="pin-bubble">ZE Padel · 3.1km</div>
+        </div>
+        <div class="club-pin dim" style="top:32%;left:80%">
+          <div class="pin-bubble">Nation · 3.8km</div>
+        </div>
+
+        <!-- User -->
+        <div class="user-pin" style="top:50%;left:50%">
+          <div class="user-dot"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="map-controls">
+          <div class="map-ctrl">+</div>
+          <div class="map-ctrl">−</div>
+          <div class="map-ctrl" style="font-size:13px;">🎯</div>
+        </div>
+
+        <div class="map-count"><span>12</span> clubs dans la zone</div>
+        <div class="map-fade"></div>
+      </div>
+
+      <!-- Peek card -->
+      <div class="peek-card">
+        <div class="peek-icon">🏟️</div>
+        <div class="peek-info">
+          <div class="peek-name">QG Padel Club</div>
+          <div class="peek-meta">📍 Paris 12 · 1.2 km · ★ 4.9 · 8 terrains</div>
+          <div class="peek-slots">
+            <div class="peek-slot">14h</div>
+            <div class="peek-slot">15h</div>
+            <div class="peek-slot">17h</div>
+          </div>
+        </div>
+        <button class="peek-btn">Réserver</button>
+      </div>
+      <div class="swipe-bar"></div>
+
+      <!-- Nearby list -->
+      <div class="nearby-section">
+        <div class="nearby-label">
+          À proximité
+          <a>Voir tout →</a>
+        </div>
+
+        <div class="club-card">
+          <div class="club-card-img ci2">
+            <div class="card-court"></div>
+            <div class="img-badges">
+              <div class="ibadge">Indoor</div>
+              <div class="ibadge green">● Dispo</div>
+            </div>
+            <div class="fav-btn">❤️</div>
+          </div>
+          <div class="club-card-body">
+            <div class="card-row1">
+              <div class="card-name">Cocoon Padel</div>
+              <div class="card-rating">★ 4.8 <span>(124)</span></div>
+            </div>
+            <div class="card-meta">
+              <span>📍 Paris 11 · 2.4 km</span>
+              <span>6 terrains</span>
+            </div>
+            <div class="card-bottom">
+              <div class="slots">
+                <div class="slot">15h</div>
+                <div class="slot">16h</div>
+                <div class="slot off">17h</div>
+              </div>
+              <button class="btn-book">Réserver</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card">
+          <div class="club-card-img ci3">
+            <div class="card-court"></div>
+            <div class="img-badges">
+              <div class="ibadge">Outdoor</div>
+              <div class="ibadge green">● Dispo</div>
+            </div>
+            <div class="fav-btn">🤍</div>
+          </div>
+          <div class="club-card-body">
+            <div class="card-row1">
+              <div class="card-name">ZE Padel Club</div>
+              <div class="card-rating">★ 4.6 <span>(87)</span></div>
+            </div>
+            <div class="card-meta">
+              <span>📍 Paris 20 · 3.1 km</span>
+              <span>4 terrains</span>
+            </div>
+            <div class="card-bottom">
+              <div class="slots">
+                <div class="slot">16h</div>
+                <div class="slot off">17h</div>
+              </div>
+              <button class="btn-book">Réserver</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- LIST VIEW -->
+    <div class="view-list">
+      <div class="list-section">
+        <div class="list-label">Mes clubs favoris</div>
+
+        <div class="club-card">
+          <div class="club-card-img ci1">
+            <div class="card-court"></div>
+            <div class="img-badges">
+              <div class="ibadge blue">⭐ Favori</div>
+              <div class="ibadge green">● Dispo</div>
+            </div>
+            <div class="fav-btn">❤️</div>
+          </div>
+          <div class="club-card-body">
+            <div class="card-row1">
+              <div class="card-name">QG Padel Club</div>
+              <div class="card-rating">★ 4.9 <span>(210)</span></div>
+            </div>
+            <div class="card-meta">
+              <span>📍 Paris 12 · 1.2 km</span>
+              <span>8 terrains</span>
+            </div>
+            <div class="card-bottom">
+              <div class="slots">
+                <div class="slot">14h</div>
+                <div class="slot">15h</div>
+                <div class="slot">17h</div>
+              </div>
+              <button class="btn-book">Réserver</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card">
+          <div class="club-card-img ci2">
+            <div class="card-court"></div>
+            <div class="img-badges">
+              <div class="ibadge blue">⭐ Favori</div>
+              <div class="ibadge green">● Dispo</div>
+            </div>
+            <div class="fav-btn">❤️</div>
+          </div>
+          <div class="club-card-body">
+            <div class="card-row1">
+              <div class="card-name">Cocoon Padel</div>
+              <div class="card-rating">★ 4.8 <span>(124)</span></div>
+            </div>
+            <div class="card-meta">
+              <span>📍 Paris 11 · 2.4 km</span>
+              <span>6 terrains</span>
+            </div>
+            <div class="card-bottom">
+              <div class="slots">
+                <div class="slot">15h</div>
+                <div class="slot">16h</div>
+                <div class="slot off">17h</div>
+              </div>
+              <button class="btn-book">Réserver</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-label" style="padding-top:6px;">Autour de moi</div>
+
+        <div class="club-card">
+          <div class="club-card-img ci3">
+            <div class="card-court"></div>
+            <div class="img-badges">
+              <div class="ibadge">Outdoor</div>
+              <div class="ibadge green">● Dispo</div>
+            </div>
+            <div class="fav-btn">🤍</div>
+          </div>
+          <div class="club-card-body">
+            <div class="card-row1">
+              <div class="card-name">ZE Padel Club</div>
+              <div class="card-rating">★ 4.6 <span>(87)</span></div>
+            </div>
+            <div class="card-meta">
+              <span>📍 Paris 20 · 3.1 km</span>
+              <span>4 terrains</span>
+            </div>
+            <div class="card-bottom">
+              <div class="slots">
+                <div class="slot">16h</div>
+                <div class="slot off">17h</div>
+              </div>
+              <button class="btn-book">Réserver</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card">
+          <div class="club-card-img ci4">
+            <div class="card-court"></div>
+            <div class="img-badges">
+              <div class="ibadge">Indoor</div>
+              <div class="ibadge green">● Dispo</div>
+            </div>
+            <div class="fav-btn">🤍</div>
+          </div>
+          <div class="club-card-body">
+            <div class="card-row1">
+              <div class="card-name">Club Nation Padel</div>
+              <div class="card-rating">★ 4.7 <span>(156)</span></div>
+            </div>
+            <div class="card-meta">
+              <span>📍 Paris 12 · 3.8 km</span>
+              <span>10 terrains</span>
+            </div>
+            <div class="card-bottom">
+              <div class="slots">
+                <div class="slot">14h</div>
+                <div class="slot">18h</div>
+                <div class="slot">19h</div>
+              </div>
+              <button class="btn-book">Réserver</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+<div class="tab-page" id="tab-feed">
+<!-- HEADER -->
+  <div class="header">
+    <div class="page-title">Feed</div>
+    <div class="header-actions">
+      <div class="icon-btn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </div>
+      <div class="icon-btn" style="background:var(--accent);border-radius:10px;width:32px;height:32px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0F" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-content">
+
+    <!-- STORIES -->
+    <div class="stories-row">
+      <div class="story-item">
+        <div class="story-ring add">
+          <div class="story-add-icon">＋</div>
+        </div>
+        <div class="story-name">Ma story</div>
+      </div>
+      <div class="story-item">
+        <div class="story-ring">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#1A3A6B,#2B5BAD)">JL</div>
+        </div>
+        <div class="story-name unseen">Julien</div>
+      </div>
+      <div class="story-item">
+        <div class="story-ring">
+          <div class="story-avatar club" style="background:linear-gradient(135deg,#0D1F3C,#1A3A6B)">🏟️</div>
+        </div>
+        <div class="story-name unseen">QG Padel</div>
+      </div>
+      <div class="story-item">
+        <div class="story-ring">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#3B6FD4,#6FA3E0)">AL</div>
+        </div>
+        <div class="story-name unseen">Alice</div>
+      </div>
+      <div class="story-item">
+        <div class="story-ring seen">
+          <div class="story-avatar" style="background:linear-gradient(135deg,#1A3F8F,#2B5BAD)">RC</div>
+        </div>
+        <div class="story-name">Raphaël</div>
+      </div>
+      <div class="story-item">
+        <div class="story-ring seen">
+          <div class="story-avatar club" style="background:linear-gradient(135deg,#0A1E35,#1E3A7A)">🎾</div>
+        </div>
+        <div class="story-name">Cocoon</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="feed-tabs">
+      <div class="feed-tab active">Pour toi</div>
+      <div class="feed-tab">Amis</div>
+      <div class="feed-tab">Clubs</div>
+    </div>
+
+    <!-- CARD 1 — Club post avec visuel -->
+    <div class="feed-card">
+      <div class="feed-card-header">
+        <div class="feed-avatar club-avatar" style="background:linear-gradient(135deg,#0D1F3C,#1A3A6B)">🏟️</div>
+        <div class="feed-author">
+          <div class="feed-author-name">QG Padel Club</div>
+          <div class="feed-author-sub">Club officiel · il y a 4h</div>
+        </div>
+        <div class="feed-more">···</div>
+      </div>
+
+      <div class="feed-visual fv1">
+        <div class="fv-court"></div>
+        <div class="fv-overlay-text">
+          Nouveau terrain 4
+          <div class="fv-overlay-sub">Maintenant disponible à la réservation</div>
+        </div>
+        <div class="fv-badge">🆕 Ouverture</div>
+      </div>
+
+      <div class="feed-text">
+        Notre <strong>terrain 4</strong> est désormais ouvert ! Padel indoor de dernière génération avec éclairage LED. Réservez dès maintenant.
+      </div>
+
+      <div class="feed-actions">
+        <div class="action-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          147
+        </div>
+        <div class="action-btn" style="margin-left:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          32
+        </div>
+        <div class="action-spacer"></div>
+        <div class="action-share">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2 — Vidéo highlight -->
+    <div class="feed-card">
+      <div class="feed-card-header">
+        <div class="feed-avatar" style="background:linear-gradient(135deg,#2B5BAD,#4A8FE8)">LB</div>
+        <div class="feed-author">
+          <div class="feed-author-name">Léa Bernard</div>
+          <div class="feed-author-sub">Highlight · il y a 6h</div>
+        </div>
+        <div class="feed-more">···</div>
+      </div>
+
+      <div class="feed-video fvid1">
+        <div class="video-play">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-label">▶ VIDÉO</div>
+        <div class="video-duration">0:42</div>
+      </div>
+
+      <div class="feed-text" style="padding-bottom:4px;">
+        Smash parfait en finale du tournoi interne 🔥 <strong>#padel</strong> <strong>#cocoon</strong>
+      </div>
+
+      <div class="feed-actions">
+        <div class="action-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          89
+        </div>
+        <div class="action-btn" style="margin-left:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          12
+        </div>
+        <div class="action-spacer"></div>
+        <div class="action-share">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3 — Post texte joueur -->
+    <div class="feed-card">
+      <div class="feed-card-header">
+        <div class="feed-avatar" style="background:linear-gradient(135deg,#3B6FD4,#6FA3E0)">AL</div>
+        <div class="feed-author">
+          <div class="feed-author-name">Alice Laurent</div>
+          <div class="feed-author-sub">Post · il y a 9h</div>
+        </div>
+        <div class="feed-more">···</div>
+      </div>
+
+      <div class="feed-text" style="padding-bottom:4px;">
+        Belle session ce matin à Cocoon avec les filles 🎾☀️ On recommence la semaine prochaine ? <strong>#padel</strong> <strong>#morning</strong>
+      </div>
+
+      <div class="feed-actions">
+        <div class="action-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          41
+        </div>
+        <div class="action-btn" style="margin-left:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          6
+        </div>
+        <div class="action-spacer"></div>
+        <div class="action-share">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4 — Post photo club -->
+    <div class="feed-card">
+      <div class="feed-card-header">
+        <div class="feed-avatar club-avatar" style="background:linear-gradient(135deg,#0A1E35,#1E3A7A)">🎾</div>
+        <div class="feed-author">
+          <div class="feed-author-name">Cocoon Padel</div>
+          <div class="feed-author-sub">Club officiel · il y a 12h</div>
+        </div>
+        <div class="feed-more">···</div>
+      </div>
+
+      <div class="feed-visual fv2">
+        <div class="fv-court"></div>
+        <div class="fv-overlay-text">
+          Open Padel Mars
+          <div class="fv-overlay-sub">Samedi 15 mars · 4 places restantes</div>
+        </div>
+        <div class="fv-badge">🏆 Tournoi</div>
+      </div>
+
+      <div class="feed-text">
+        Les inscriptions se ferment dans <strong>48h</strong>. Plus que <strong>4 places</strong> disponibles pour l'Open Padel de mars !
+      </div>
+
+      <div class="feed-actions">
+        <div class="action-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          56
+        </div>
+        <div class="action-btn" style="margin-left:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          9
+        </div>
+        <div class="action-spacer"></div>
+        <div class="action-share">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:10px;"></div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+
+</div>
+<div class="tab-page" id="tab-tournois">
+<div class="header">
+    <div class="page-title">Tournois</div>
+    <div class="header-right">
+      <div class="icon-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </div>
+      <div class="icon-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active">Découvrir</div>
+    <div class="tab">Mes inscriptions</div>
+    <div class="tab">Résultats</div>
+  </div>
+
+  <div class="scroll-content">
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <div class="filter-pill active">Tous</div>
+      <div class="filter-pill">P25</div>
+      <div class="filter-pill">P50</div>
+      <div class="filter-pill">P100</div>
+      <div class="filter-pill">P250</div>
+      <div class="filter-pill">P500</div>
+      <div class="filter-pill">P1000</div>
+      <div class="filter-pill">P1500</div>
+      <div class="filter-pill">P2000</div>
+    </div>
+
+    <!-- MAP TOURNOIS -->
+    <div style="margin:0 16px 18px;border-radius:18px;overflow:hidden;position:relative;height:200px;background:#0D1520;">
+      <!-- Grid -->
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(74,143,232,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(74,143,232,0.04) 1px,transparent 1px);background-size:28px 28px;"></div>
+      <!-- Roads H -->
+      <div style="position:absolute;height:3px;left:0;right:0;top:28%;background:rgba(255,255,255,0.055);"></div>
+      <div style="position:absolute;height:7px;left:0;right:0;top:50%;background:rgba(255,255,255,0.09);"></div>
+      <div style="position:absolute;height:3px;left:0;right:0;top:72%;background:rgba(255,255,255,0.055);"></div>
+      <!-- Roads V -->
+      <div style="position:absolute;width:3px;top:0;bottom:0;left:22%;background:rgba(255,255,255,0.055);"></div>
+      <div style="position:absolute;width:7px;top:0;bottom:0;left:44%;background:rgba(255,255,255,0.09);"></div>
+      <div style="position:absolute;width:3px;top:0;bottom:0;left:68%;background:rgba(255,255,255,0.055);"></div>
+      <!-- Blocks -->
+      <div style="position:absolute;top:6%;left:3%;width:50px;height:32px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:6%;left:27%;width:65px;height:42px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:6%;left:50%;width:70px;height:38px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:6%;left:73%;width:52px;height:32px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:34%;left:3%;width:44px;height:50px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:34%;left:27%;width:60px;height:30px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:57%;left:3%;width:55px;height:38px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:57%;left:27%;width:48px;height:52px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:57%;left:50%;width:65px;height:38px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <div style="position:absolute;top:57%;left:73%;width:50px;height:44px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.035);"></div>
+      <!-- Park -->
+      <div style="position:absolute;top:34%;left:50%;width:46px;height:46px;border-radius:6px;background:rgba(74,180,90,0.055);border:1px solid rgba(74,180,90,0.1);"></div>
+
+      <!-- Tournament pins -->
+      <!-- Selected -->
+      <div style="position:absolute;top:44%;left:40%;transform:translate(-50%,-100%);z-index:10;">
+        <div style="background:#fff;color:#0A0A0F;font-family:'Syne',sans-serif;font-weight:800;font-size:10px;padding:5px 9px;border-radius:9px;white-space:nowrap;box-shadow:0 6px 22px rgba(255,255,255,0.2);position:relative;">
+          P500 · Cocoon
+          <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #fff;"></div>
+        </div>
+      </div>
+      <!-- Other pins -->
+      <div style="position:absolute;top:22%;left:65%;transform:translate(-50%,-100%);z-index:10;">
+        <div style="background:#4A8FE8;color:#0A0A0F;font-family:'Syne',sans-serif;font-weight:800;font-size:10px;padding:5px 9px;border-radius:9px;white-space:nowrap;box-shadow:0 4px 14px rgba(74,143,232,0.45);position:relative;">
+          P250 · Nation
+          <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #4A8FE8;"></div>
+        </div>
+      </div>
+      <div style="position:absolute;top:60%;left:20%;transform:translate(-50%,-100%);z-index:10;">
+        <div style="background:#18181F;color:#6B6B7E;font-family:'Syne',sans-serif;font-weight:800;font-size:10px;padding:5px 9px;border-radius:9px;white-space:nowrap;border:1px solid rgba(255,255,255,0.07);position:relative;">
+          P100 · ZE
+          <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #18181F;"></div>
+        </div>
+      </div>
+      <div style="position:absolute;top:30%;left:80%;transform:translate(-50%,-100%);z-index:10;">
+        <div style="background:#18181F;color:#6B6B7E;font-family:'Syne',sans-serif;font-weight:800;font-size:10px;padding:5px 9px;border-radius:9px;white-space:nowrap;border:1px solid rgba(255,255,255,0.07);position:relative;">
+          P1000 · QG
+          <div style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #18181F;"></div>
+        </div>
+      </div>
+
+      <!-- User dot -->
+      <div style="position:absolute;top:52%;left:48%;transform:translate(-50%,-50%);z-index:5;">
+        <div style="width:13px;height:13px;background:#fff;border-radius:50%;border:3px solid #4A8FE8;box-shadow:0 0 0 5px rgba(74,143,232,0.18),0 0 18px rgba(74,143,232,0.35);"></div>
+      </div>
+
+      <!-- Controls -->
+      <div style="position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:5px;">
+        <div style="width:32px;height:32px;background:rgba(10,10,15,0.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.07);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#F0F0F5;cursor:pointer;font-family:'Syne',sans-serif;">+</div>
+        <div style="width:32px;height:32px;background:rgba(10,10,15,0.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.07);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#F0F0F5;cursor:pointer;font-family:'Syne',sans-serif;">−</div>
+      </div>
+
+      <!-- Count -->
+      <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(10,10,15,0.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.07);border-radius:100px;padding:6px 14px;font-size:11px;font-weight:700;color:#F0F0F5;white-space:nowrap;font-family:'Syne',sans-serif;"><span style="color:#4A8FE8;">8</span> tournois dans la zone</div>
+
+      <!-- Fade bottom -->
+      <div style="position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,#0A0A0F,transparent);pointer-events:none;"></div>
+    </div>
+
+    <!-- À VENIR -->
+    <div class="section-lbl" style="padding-top:6px;">À venir</div>
+
+    <!-- Card 1 — Ouvert -->
+    <div class="t-card">
+      <div class="t-card-top tc2">
+        <div class="t-card-court"></div>
+        <div class="t-top-badges">
+          <div class="t-badge tb-open">● Ouvert</div>
+          <div class="t-badge tb-level">Niv. 3–6</div>
+        </div>
+      </div>
+      <div class="t-card-body">
+        <div class="t-card-row1">
+          <div class="t-name">Tournoi Mixte Nation</div>
+          <div class="t-buyin">€30</div>
+        </div>
+        <div class="t-meta">
+          <span>📅 Mar 22 · 10h00</span>
+          <span>📍 Club Nation</span>
+        </div>
+        <div class="t-bottom">
+          <div class="t-progress-wrap">
+            <div class="t-progress-label">
+              <span>Inscrits</span>
+              <strong>18 / 24</strong>
+            </div>
+            <div class="t-progress-bar">
+              <div class="t-progress-fill" style="width:75%"></div>
+            </div>
+          </div>
+          <button class="btn-inscrire">S'inscrire</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 — Presque complet -->
+    <div class="t-card">
+      <div class="t-card-top tc3">
+        <div class="t-card-court"></div>
+        <div class="t-top-badges">
+          <div class="t-badge tb-soon">⚡ 2 places</div>
+          <div class="t-badge tb-level">Niv. 6–9</div>
+        </div>
+      </div>
+      <div class="t-card-body">
+        <div class="t-card-row1">
+          <div class="t-name">Elite Cup · Paris</div>
+          <div class="t-buyin">€80</div>
+        </div>
+        <div class="t-meta">
+          <span>📅 Mar 29 · 9h00</span>
+          <span>📍 Padel Bastille</span>
+        </div>
+        <div class="t-bottom">
+          <div class="t-progress-wrap">
+            <div class="t-progress-label">
+              <span>Inscrits</span>
+              <strong>30 / 32</strong>
+            </div>
+            <div class="t-progress-bar">
+              <div class="t-progress-fill almost" style="width:94%"></div>
+            </div>
+          </div>
+          <button class="btn-inscrire">S'inscrire</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 — Gratuit -->
+    <div class="t-card">
+      <div class="t-card-top tc4">
+        <div class="t-card-court"></div>
+        <div class="t-top-badges">
+          <div class="t-badge tb-open">● Ouvert</div>
+          <div class="t-badge tb-level">Niv. 1–4</div>
+        </div>
+      </div>
+      <div class="t-card-body">
+        <div class="t-card-row1">
+          <div class="t-name">Tournoi Débutants</div>
+          <div class="t-buyin" style="color:var(--green)">Gratuit</div>
+        </div>
+        <div class="t-meta">
+          <span>📅 Avr 5 · 13h00</span>
+          <span>📍 ZE Padel Club</span>
+        </div>
+        <div class="t-bottom">
+          <div class="t-progress-wrap">
+            <div class="t-progress-label">
+              <span>Inscrits</span>
+              <strong>8 / 16</strong>
+            </div>
+            <div class="t-progress-bar">
+              <div class="t-progress-fill" style="width:50%"></div>
+            </div>
+          </div>
+          <button class="btn-inscrire">S'inscrire</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 — Complet -->
+    <div class="t-card">
+      <div class="t-card-top tc1">
+        <div class="t-card-court"></div>
+        <div class="t-top-badges">
+          <div class="t-badge tb-full">✗ Complet</div>
+          <div class="t-badge tb-level">Niv. 5–8</div>
+        </div>
+      </div>
+      <div class="t-card-body">
+        <div class="t-card-row1">
+          <div class="t-name">Spring Series · Cocoon</div>
+          <div class="t-buyin">€60</div>
+        </div>
+        <div class="t-meta">
+          <span>📅 Avr 12 · 9h00</span>
+          <span>📍 Cocoon Padel</span>
+        </div>
+        <div class="t-bottom">
+          <div class="t-progress-wrap">
+            <div class="t-progress-label">
+              <span>Inscrits</span>
+              <strong>32 / 32</strong>
+            </div>
+            <div class="t-progress-bar">
+              <div class="t-progress-fill almost" style="width:100%"></div>
+            </div>
+          </div>
+          <button class="btn-complet">Complet</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:10px;"></div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+
+</div>
+<div class="tab-page" id="tab-profil">
+<div class="scroll-content">
+
+    <!-- COVER -->
+    <div class="profile-cover">
+    </div>
+
+    <!-- AVATAR -->
+    <div class="avatar-section">
+      <div class="avatar-row">
+        <div class="avatar-wrap">
+          <div class="avatar">TM</div>
+          <div class="avatar-level">Niv. 7</div>
+        </div>
+        <div class="avatar-btns">
+          <button class="btn-edit">Modifier</button>
+          <div class="btn-share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAME -->
+    <div class="profile-name-block">
+      <div class="profile-name">Thomas Mercier</div>
+      <div class="profile-handle">
+        @thomasmercier
+      </div>
+    </div>
+
+
+    <!-- PROGRESSION -->
+    <div class="section-header" style="margin-top:32px;">
+      <div class="section-title">Progression classement</div>
+      <div class="chart-period" style="font-size:11px;color:var(--muted);font-weight:600;">6 mois</div>
+    </div>
+
+    <div class="chart-card" style="margin-bottom:40px;">
+      <div class="chart-current">
+        <div class="chart-val-big">2 430</div>
+        <div class="chart-delta">↑ +180 pts</div>
+      </div>
+      <div class="chart-sublbl" style="margin-bottom:12px;">depuis janvier</div>
+      <div class="chart-area">
+        <svg viewBox="0 0 320 80" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4A8FE8" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#4A8FE8" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="20" x2="320" y2="20" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <line x1="0" y1="40" x2="320" y2="40" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <path d="M0,68 C30,65 55,62 80,55 C105,48 120,52 145,44 C170,36 185,40 210,30 C235,20 255,24 280,16 C295,12 308,10 320,8 L320,80 L0,80 Z" fill="url(#chartGrad)"/>
+          <path d="M0,68 C30,65 55,62 80,55 C105,48 120,52 145,44 C170,36 185,40 210,30 C235,20 255,24 280,16 C295,12 308,10 320,8" fill="none" stroke="#4A8FE8" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="320" cy="8" r="4" fill="#4A8FE8"/>
+          <circle cx="320" cy="8" r="7" fill="rgba(74,143,232,0.2)"/>
+        </svg>
+      </div>
+      <div class="chart-labels">
+        <span class="chart-label">Jan</span>
+        <span class="chart-label">Fév</span>
+        <span class="chart-label">Mar</span>
+        <span class="chart-label">Avr</span>
+        <span class="chart-label">Mai</span>
+        <span class="chart-label">Mar</span>
+      </div>
+    </div>
+
+    <!-- HISTORIQUE MATCHS -->
+    <div class="section-header" style="margin-top:40px;">
+      <div class="section-title">Derniers matchs</div>
+      <div class="section-link">Voir tout →</div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;margin:0 16px 40px;overflow:hidden;">
+      <div class="match-row">
+        <div class="match-result-dot dot-win">V</div>
+        <div class="match-info">
+          <div class="match-vs">vs Alice L. & Raphaël C.</div>
+          <div class="match-meta-row">QG Padel · il y a 2h · Match amical</div>
+        </div>
+        <div class="match-score-col">
+          <div class="match-score">6·4</div>
+          <div class="match-pts">+18 pts</div>
+        </div>
+      </div>
+      <div class="match-row">
+        <div class="match-result-dot dot-win">V</div>
+        <div class="match-info">
+          <div class="match-vs">vs Marc C. & Paul D.</div>
+          <div class="match-meta-row">Cocoon Padel · Hier · Compétition</div>
+        </div>
+        <div class="match-score-col">
+          <div class="match-score">7·5</div>
+          <div class="match-pts">+24 pts</div>
+        </div>
+      </div>
+      <div class="match-row">
+        <div class="match-result-dot dot-lose">D</div>
+        <div class="match-info">
+          <div class="match-vs">vs Julien L. & Sofiane M.</div>
+          <div class="match-meta-row">Club Nation · Mar 10 · Match amical</div>
+        </div>
+        <div class="match-score-col">
+          <div class="match-score">3·6</div>
+          <div class="match-pts neg">−12 pts</div>
+        </div>
+      </div>
+      <div class="match-row">
+        <div class="match-result-dot dot-win">V</div>
+        <div class="match-info">
+          <div class="match-vs">vs Thomas B. & Rémi V.</div>
+          <div class="match-meta-row">QG Padel · Mar 8 · Compétition</div>
+        </div>
+        <div class="match-score-col">
+          <div class="match-score">6·2</div>
+          <div class="match-pts">+20 pts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AMIS -->
+    <div class="section-header" style="margin-top:40px;">
+      <div class="section-title">Amis · 38</div>
+      <div class="section-link">Voir tout →</div>
+    </div>
+
+    <div class="friends-row" style="padding-bottom:40px;">
+      <div class="friend-card">
+        <div class="friend-avatar" style="background:linear-gradient(135deg,#3B6FD4,#6FA3E0)">
+          AL
+          <div class="friend-online"></div>
+        </div>
+        <div class="friend-name">Alice</div>
+      </div>
+      <div class="friend-card">
+        <div class="friend-avatar" style="background:linear-gradient(135deg,#2B6CB0,#4A90D9)">
+          JL
+          <div class="friend-online"></div>
+        </div>
+        <div class="friend-name">Julien</div>
+      </div>
+      <div class="friend-card">
+        <div class="friend-avatar" style="background:linear-gradient(135deg,#1A3F8F,#2B5BAD)">RC</div>
+        <div class="friend-name">Raphaël</div>
+      </div>
+      <div class="friend-card">
+        <div class="friend-avatar" style="background:linear-gradient(135deg,#4A2D8F,#7B5FBF)">SM</div>
+        <div class="friend-name">Sofiane</div>
+      </div>
+      <div class="friend-card">
+        <div class="friend-avatar" style="background:linear-gradient(135deg,#0D3B6E,#1A5FAD)">PD</div>
+        <div class="friend-name">Paul</div>
+      </div>
+      <div class="friend-card">
+        <div class="friend-add">＋</div>
+        <div class="friend-name">Ajouter</div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="section-header" style="margin-top:40px;">
+      <div class="section-title">Paramètres</div>
+    </div>
+
+    <div class="settings-list">
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(74,143,232,0.1)">🔔</div>
+        <div class="setting-label">Notifications</div>
+        <div class="setting-value">Activées</div>
+        <div class="setting-arrow">›</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(74,222,128,0.08)">🔒</div>
+        <div class="setting-label">Confidentialité</div>
+        <div class="setting-value">Public</div>
+        <div class="setting-arrow">›</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(245,166,35,0.1)">🎯</div>
+        <div class="setting-label">Niveau affiché</div>
+        <div class="setting-value">Niv. 7</div>
+        <div class="setting-arrow">›</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(255,255,255,0.05)">💳</div>
+        <div class="setting-label">Paiement</div>
+        <div class="setting-value">Visa ···6411</div>
+        <div class="setting-arrow">›</div>
+      </div>
+      <div class="setting-row" style="border-bottom:none;">
+        <div class="setting-icon" style="background:rgba(239,68,68,0.08)">🚪</div>
+        <div class="setting-label" style="color:#f87171;">Se déconnecter</div>
+      </div>
+    </div>
+
+    <div style="height:30px;"></div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+
+</div>
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchTab('accueil', this)">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg></div>
+    <div class="nav-label">Accueil</div>
+  </div>
+  <div class="nav-item" onclick="switchTab('clubs', this)">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M2 8c2.5 0 4 1.5 4 4s-1.5 4-4 4"/><path d="M22 8c-2.5 0-4 1.5-4 4s1.5 4 4 4"/></svg></div>
+    <div class="nav-label">Clubs</div>
+  </div>
+  <div class="nav-item" onclick="switchTab('feed', this)">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg></div>
+    <div class="nav-label">Feed</div>
+  </div>
+  <div class="nav-item" onclick="switchTab('tournois', this)">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="5" height="4" rx="1"/><rect x="2" y="10" width="5" height="4" rx="1"/><rect x="17" y="6" width="5" height="4" rx="1"/><line x1="7" y1="5" x2="11" y2="5"/><line x1="7" y1="12" x2="11" y2="12"/><line x1="11" y1="5" x2="11" y2="12"/><line x1="11" y1="8.5" x2="17" y2="8.5"/></svg></div>
+    <div class="nav-label">Tournois</div>
+  </div>
+  <div class="nav-item" onclick="switchTab('profil', this)">
+    <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    <div class="nav-label">Profil</div>
+  </div>
+</div>
+<script>
+function switchTab(name, el) {
+  document.querySelectorAll('.tab-page').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</div></body></html>
