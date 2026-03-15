@@ -10,11 +10,14 @@
     "build:android": "cap sync android && cap open android"
   },
   "dependencies": {
-    "@capacitor/core": "^6.0.0"
+    "@capacitor/core": "^6.0.0",
+    "expo": "^55.0.6"
   },
   "devDependencies": {
+    "@capacitor/android": "^6.0.0",
     "@capacitor/cli": "^6.0.0",
     "@capacitor/ios": "^6.0.0",
-    "@capacitor/android": "^6.0.0"
+    "@types/react": "~19.2.10",
+    "typescript": "~5.9.2"
   }
 }

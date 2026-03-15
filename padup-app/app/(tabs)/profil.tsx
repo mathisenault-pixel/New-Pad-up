@@ -6,6 +6,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useBookings } from '@/context/bookings';
 import { useProfile } from '@/context/profile';
+import { useAuth } from '@/context/auth';
 
 const C = {
   bg: '#0A0A0F', surface2: '#18181F', border: 'rgba(255,255,255,0.07)',
@@ -357,6 +358,7 @@ function FriendProfileView({ friendId, onClose }: { friendId: string; onClose: (
 export default function ProfilScreen() {
   const { bookings } = useBookings();
   const { profile, updateProfile } = useProfile();
+  const { signOut } = useAuth();
 
   const [editVisible, setEditVisible] = useState(false);
   const [draft, setDraft] = useState({ ...profile });
@@ -605,7 +607,7 @@ export default function ProfilScreen() {
           {/* Se déconnecter */}
           <TouchableOpacity style={s.settingRow} activeOpacity={0.7} onPress={() => Alert.alert('Se déconnecter', 'Voulez-vous vraiment vous déconnecter ?', [
             { text: 'Annuler', style: 'cancel' },
-            { text: 'Se déconnecter', style: 'destructive', onPress: () => {} },
+            { text: 'Se déconnecter', style: 'destructive', onPress: signOut },
           ])}>
             <View style={[s.settingIcon, { backgroundColor: 'rgba(239,68,68,0.1)' }]}>
               <Text style={{ fontSize: 18 }}>🚪</Text>
